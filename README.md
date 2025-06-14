@@ -1,6 +1,6 @@
 # Portfolio Exercises
 
-To repozytorium zawiera zestaw przykładowych ćwiczeń i małych projektów z JavaScript oraz podstaw frontendowych technologii, które realizuję, aby rozwijać swoje umiejętności programistyczne.
+To repozytorium zawiera zestaw przykładowych ćwiczeń i małych projektów z JavaScript oraz podstaw frontendowych technologii, które realizuję, aby rozwijać swoje umiejętności programistyczne. Przy każdym projekcie jest pokazane zdjęcie podglądu.
 
 ## Co znajdziesz w repozytorium?
 
