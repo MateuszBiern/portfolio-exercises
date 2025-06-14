@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<link rel=" preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/fc908be6d8.js" crossorigin="anonymous"></script>
+
+    <title>To Do List Mateusz Biernacki</title>
+</head>
+
+<body>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --deep-dark: rgb(26, 26, 26);
+            --light-dark: rgb(79, 82, 92);
+            --light-blue: rgb(0, 132, 255);
+            --dark-blue: rgb(2, 84, 161);
+            --light: rgb(245, 245, 245);
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            margin-top: 120px;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+        }
+
+        h1 {
+            color: var(--light);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .fas {
+            pointer-events: none;
+        }
+
+        .todo {
+            width: 800px;
+            border-radius: 5px;
+            background: #fff;
+            box-shadow: 4px 4px 5px rgba(82, 82, 82, 0.4);
+            text-align: center;
+        }
+
+        .header {
+            border-radius: 5px 5px 0 0;
+            padding: 40px;
+            background-image: linear-gradient(340deg, #045de9 0%, #09c6f9 100%);
+        }
+
+        .todo-input {
+            width: 80%;
+            padding: 10px 20px;
+            margin-right: 20px;
+            border: none;
+            border-radius: 5px;
+            color: var(--light-dark);
+            background-color: var(--light);
+        }
+
+        .error-info {
+            margin-top: 20px;
+            color: var(--dark-blue);
+        }
+
+        .btn-add {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 5px;
+            color: var(--deep-dark);
+            background-color: var(--light);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .btn-add:hover {
+            color: #fff;
+            background-color: var(--light-dark);
+        }
+
+        .todolist {
+            padding: 20px 0;
+        }
+
+        .todolist h3 {
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .todolist li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px;
+            padding-left: 20px;
+            text-align: left;
+            list-style: none;
+            background-color: var(--light);
+        }
+
+        .tools {
+            display: inline-block;
+        }
+
+        .tools button {
+            padding: 15px 10px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tools button:hover {
+            background-color: #ddd;
+        }
+
+        .complete {
+            color: var(--light-blue);
+        }
+
+        .edit {
+            font-weight: bold;
+            color: rgb(15, 179, 69);
+        }
+
+        .delete {
+            color: tomato;
+        }
+
+        .completed {
+            font-size: 12px;
+            color: var(--light-dark);
+            text-decoration: line-through;
+            font-style: italic;
+        }
+
+        .fav {
+            font-size: 12px;
+            text-decoration: line-through;
+            color: gold;
+        }
+
+        .favcolor {
+            color: gold;
+        }
+
+        .popup {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            color: var(--light);
+            background-color: var(--light-dark);
+            border-radius: 5px;
+        }
+
+        .popup h3 {
+            padding: 20px;
+        }
+
+        .popup-info {
+            color: var(--light);
+            margin-bottom: 20px;
+        }
+
+        .popup-body {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 90%;
+            padding: 10px;
+        }
+
+        .popup-input {
+            width: 100%;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: var(--light-dark);
+            background-color: var(--light);
+        }
+
+        .popup-btn {
+            width: 30%;
+            display: inline-block;
+            padding: 10px 22px;
+            margin: 20px;
+            border: none;
+            border-radius: 5px;
+            color: var(--deep-dark);
+            background-color: var(--light);
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        .popup-btn:hover {
+            color: #fff;
+            background-color: var(--light-blue);
+        }
+    </style>
+
+
+    <div class="todo">
+        <div class="header">
+            <h1>ToDo List</h1>
+            <input type="text" class="todo-input" placeholder="Wpisz treść zadania...">
+            <button class="btn-add">Add</button>
+        </div>
+        <div class="todolist">
+            <h3>Lista zadań:</h3>
+            <p class="error-info">Brak zadań na liście</p>
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="popup">
+        <h3>Edytuj zadanie:</h3>
+        <div class="popup-body">
+            <p class="popup-info"></p>
+            <input type="text" class="popup-input" placeholder="Wprowadź nową treść zadania...">
+            <button class="popup-btn accept">Zatwierdź</button>
+            <button class="popup-btn cancel">Anuluj</button>
+        </div>
+    </div>
+
+
+
+    <script>let todoInput
+        let errorInfo
+        let addBtn
+        let ulList
+        let newTodo
+        let popup
+        let popupInfo
+        let todoToEdit
+        let popupInput
+        let popupAddBtn
+        let popupCloseBtn
+
+        const main = () => {
+            prepareDOMElements()
+            prepareDOMEvents()
+        }
+
+        const prepareDOMElements = () => {
+            todoInput = document.querySelector('.todo-input')
+            errorInfo = document.querySelector('.error-info')
+            addBtn = document.querySelector('.btn-add')
+            ulList = document.querySelector('.todolist ul')
+
+            popup = document.querySelector('.popup')
+            popupInfo = document.querySelector('.popup-info')
+            popupInput = document.querySelector('.popup-input')
+            popupAddBtn = document.querySelector('.accept')
+            popupCloseBtn = document.querySelector('.cancel')
+        }
+
+        const prepareDOMEvents = () => {
+            addBtn.addEventListener('click', addNewTodo)
+            ulList.addEventListener('click', checkClick)
+            popupCloseBtn.addEventListener('click', closePopup)
+            popupAddBtn.addEventListener('click', changeTodoText)
+            todoInput.addEventListener('keyup', enterKeyCheck)
+        }
+
+        const addNewTodo = () => {
+            if (todoInput.value !== '') {
+                newTodo = document.createElement('li')
+                newTodo.textContent = todoInput.value
+                createToolsArea()
+                ulList.append(newTodo)
+
+                todoInput.value = ''
+                errorInfo.textContent = ''
+            } else {
+                errorInfo.textContent = 'Wpisz treść zadania!'
+            }
+        }
+
+        const createToolsArea = () => {
+            const toolsPanel = document.createElement('div')
+            toolsPanel.classList.add('tools')
+            newTodo.append(toolsPanel)
+
+
+
+
+
+            const completeBtn = document.createElement('button')
+            completeBtn.classList.add('complete')
+            completeBtn.innerHTML = '<i class="fas fa-check"></i>'
+
+            const editBtn = document.createElement('button')
+            editBtn.classList.add('edit')
+            editBtn.textContent = 'EDIT'
+
+            const deleteBtn = document.createElement('button')
+            deleteBtn.classList.add('delete')
+            deleteBtn.innerHTML = '<i class="fas fa-times"></i>'
+
+
+
+
+            const favBtn = document.createElement('button')
+
+            favBtn.classList.add('fav')
+            favBtn.innerHTML = '<i class="fa-solid fa-star"></i>'
+
+            toolsPanel.append(completeBtn, editBtn, deleteBtn, favBtn)
+        }
+
+        const checkClick = e => {
+            if (e.target.matches('.complete')) {
+                e.target.closest('li').classList.toggle('completed')
+                e.target.classList.toggle('completed')
+            } else if (e.target.matches('.edit')) {
+                editToDo(e)
+            } else if (e.target.matches('.delete')) {
+                deleteTodo(e)
+            } else if (e.target.matches('.fav')) {
+                e.target.closest('li').classList.toggle('favcolor')
+            }
+        }
+
+        const editToDo = e => {
+            todoToEdit = e.target.closest('li')
+            popupInput.value = todoToEdit.firstChild.textContent
+            console.log(todoToEdit.firstChild)
+            popup.style.display = 'flex'
+        }
+
+        const closePopup = () => {
+            popup.style.display = 'none'
+            popupInfo.textContent = ''
+        }
+
+        const changeTodoText = () => {
+            if (popupInput.value !== '') {
+                todoToEdit.firstChild.textContent = popupInput.value
+                popup.style.display = 'none'
+                popupInfo.textContent = ''
+            } else {
+                popupInfo.textContent = 'Musisz podać jakąś treść!'
+            }
+        }
+
+        const deleteTodo = e => {
+            e.target.closest('li').remove()
+            const allTodos = ulList.querySelectorAll('li')
+            if (allTodos.length === 0) {
+                errorInfo.textContent = 'Brak zadań na liście'
+            }
+        }
+        const favTodo = e => { }
+        const enterKeyCheck = e => {
+            if (e.key === 'Enter') {
+                addNewTodo()
+            }
+        }
+        document.addEventListener('DOMContentLoaded', main)
+    </script>
+</body>
+
+</html>
